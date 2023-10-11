@@ -4,6 +4,7 @@ import Button from '../../Button'
 import { useAppDispatch } from '../../../store'
 import { openForm } from '../../../store/slices/formSlice'
 import { deleteListing } from '../../../store/slices/listingsSlice'
+import { deleteListingRequest } from '../../../apis/listings'
 
 interface Props {
   listing: Listing
@@ -13,7 +14,7 @@ const JobCard: FC<Props> = ({ listing }) => {
 
   const dispatch = useAppDispatch()
   const handleDelete = async () => {
-    await deleteListing(id)
+    await deleteListingRequest(id)
 
     dispatch(deleteListing(id))
   }

@@ -9,7 +9,7 @@ const App = () => {
 
   return (
     <div className='bg-bgGray'>
-      <nav className='sticky top-0 mb-10 flex w-full items-center justify-center bg-white py-2 shadow-md'>
+      <nav className='sticky top-0 mb-10 flex w-full bg-white px-5 py-2 shadow-md'>
         <Button variant='filled' onClick={() => dispatch(openForm())}>
           Create A Job
         </Button>

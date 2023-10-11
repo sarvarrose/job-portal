@@ -1,6 +1,8 @@
+import { Listing } from '../../../types'
 import { createListingRequest, updateListingRequest } from '../../apis/listings'
+import { formFields } from '../../constants'
 import { useAppDispatch, useAppSelector } from '../../store'
-import { closeForm, selectForm, selectListingCreatePayload, selectListingUpdatePayload, setStep } from '../../store/slices/formSlice'
+import { closeForm, selectForm, selectListingCreatePayload, selectListingUpdatePayload, setFieldError, setStep } from '../../store/slices/formSlice'
 import { insertListing, updateListing } from '../../store/slices/listingsSlice'
 import Button from '../Button'
 import FormFields from './FormFields'
@@ -13,6 +15,21 @@ const Form = () => {
   const listingUpdatePayload = useAppSelector(selectListingUpdatePayload)
 
   const handleFormAction = async () => {
+    // validate form before proceeding
+    const fields = step === 1 ? formFields.stepOne : formFields.stepTwo
+
+    // @ts-ignore
+    const requiredFieldIds: keyof Listing[] = fields.filter((field) => field.required).map((field) => field.id)
+    // @ts-ignore
+    const fieldsWithErrors = requiredFieldIds.filter((id) => data[id].value === '')
+
+    // validation failed
+    if (fieldsWithErrors.length > 0) {
+      fieldsWithErrors.forEach((id: keyof Listing) => dispatch(setFieldError({ input: id, error: 'This field is required' })))
+
+      return
+    }
+
     if (step === 1) {
       dispatch(setStep(2))
     } else {
@@ -39,7 +56,7 @@ const Form = () => {
             <div className='bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4'>
               <div className='flex flex-col gap-y-6 rounded-lg bg-white p-8'>
                 <div className='flex justify-between'>
-                  <span>Create a job</span>
+                  <span className='text-xl'>Create a job</span>
                   <span>Step {step}</span>
                   <button
                     type='button'

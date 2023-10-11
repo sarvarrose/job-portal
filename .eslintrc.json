@@ -28,6 +28,7 @@
     ],
     "react/react-in-jsx-scope": "off",
     "no-trailing-spaces": "warn",
+    "@typescript-eslint/ban-ts-comment": 1,
     "max-len": [
       "warn",
       {

@@ -59,11 +59,15 @@ export const formSlice = createSlice({
     setFieldValue(state, action: PayloadAction<{ input: keyof Listing; value: string }>) {
       const { input, value } = action.payload
       state.data[input] = { value: value, error: '' }
+    },
+    setFieldError(state, action: PayloadAction<{ input: keyof Listing; error: string }>) {
+      const { input, error } = action.payload
+      state.data[input] = { ...state.data[input], error }
     }
   }
 })
 
-export const { openForm, closeForm, setStep, setFieldValue } = formSlice.actions
+export const { openForm, closeForm, setStep, setFieldValue, setFieldError } = formSlice.actions
 
 export default formSlice.reducer
 
