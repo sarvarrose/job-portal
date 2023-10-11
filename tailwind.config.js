@@ -1,6 +1,5 @@
 import tailwindcss from 'tailwindcss'
 import autoprefixer from 'autoprefixer'
-import defaultTheme from 'tailwindcss/defaultTheme'
 import tailwindPixelPerfectPreset from '@rise8/tailwind-pixel-perfect-preset'
 
 /** @type {import('tailwindcss').Config} */
@@ -10,11 +9,6 @@ module.exports = {
 
   plugins: [tailwindcss, autoprefixer],
   theme: {
-    extend: {
-      fontFamily: {
-        sans: ['Poppins', ...defaultTheme.fontFamily.sans]
-      }
-    },
     colors: {
       transparent: 'transparent',
       white: '#ffffff',

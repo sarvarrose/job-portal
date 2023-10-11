@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import getListings from '../../apis/listings/getListings'
 import { useAppDispatch, useAppSelector } from '../../store'
-import { addListings } from '../../store/slices/listingsSlice'
+import { setListings } from '../../store/slices/listingsSlice'
 import JobCard from './JobCard'
 
 const JobCards = () => {
@@ -11,7 +11,7 @@ const JobCards = () => {
   useEffect(() => {
     ;(async () => {
       const listings = await getListings()
-      dispatch(addListings(listings))
+      dispatch(setListings(listings))
     })()
   }, [])
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { Listing } from '../../../types'
-import { setFormField } from '../../store/slices/formSlice'
+import { setFieldValue } from '../../store/slices/formSlice'
 
 interface IInputFieldProps {
   id: string
@@ -105,7 +105,7 @@ function InputField(props: IInputFieldProps) {
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     dispatch(
-      setFormField({
+      setFieldValue({
         input: e.target.name as keyof Listing,
         value: e.target.value
       })
@@ -124,7 +124,7 @@ function InputField(props: IInputFieldProps) {
             return (
               <div key={key} className='flex flex-row items-center gap-x-2'>
                 <input
-                  className='text-primary-dark focus:border-primary w-full rounded border px-4 py-2 outline-none'
+                  className='text-primary-dark w-full rounded border px-4 py-2 outline-none focus:border-primary'
                   id={id}
                   name={id}
                   type='radio'
@@ -140,7 +140,7 @@ function InputField(props: IInputFieldProps) {
         </div>
       ) : (
         <input
-          className={`${border} text-primary-dark focus:border-primary w-full rounded border px-4 py-2 outline-none`}
+          className={`${border} text-primary-dark w-full rounded border px-4 py-2 outline-none focus:border-primary`}
           id={id}
           name={id}
           type='text'

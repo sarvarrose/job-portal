@@ -4,13 +4,23 @@ import Button from '../../Button.tsx'
 import { useAppDispatch } from '../../../store'
 import { openForm, setFormData } from '../../../store/slices/formSlice'
 import deleteListing from '../../../apis/listings/deleteListing'
+import getListings from '../../../apis/listings/getListings'
+import { setListings } from '../../../store/slices/listingsSlice'
 
 interface Props {
   listing: Listing
 }
 const JobCard: FC<Props> = ({ listing }) => {
-  const dispatch = useAppDispatch()
   const { id, jobTitle, companyName, location, remoteType, totalEmployees, industry, salaryMinimum, salaryMaximum, experienceMinimum, experienceMaximum, avatar, applyType } = listing
+
+  const dispatch = useAppDispatch()
+  const handleDelete = async () => {
+    await deleteListing(id)
+
+    // TODO: this is overfetching. we can update the redux state instead to remove the deleted listing on success
+    const listings = await getListings()
+    dispatch(setListings(listings))
+  }
 
   return (
     <div className='flex min-w-[500px] basis-[40%] flex-row items-start justify-start gap-1 self-stretch rounded-lg bg-white px-6 py-4'>
@@ -21,31 +31,31 @@ const JobCard: FC<Props> = ({ listing }) => {
           <p className='text-base font-normal'>
             {companyName} - {industry}
           </p>
-          <p className='text-gray text-base font-normal text-neutral-500'>{location}</p>
+          <p className='text-neutral-500 text-base font-normal text-gray'>{location}</p>
         </div>
         <div className='flex flex-col items-start justify-start gap-2'>
-          <p className='flex items-start justify-start gap-1'>
-            <p className='text-lightBlack text-base font-normal text-neutral-800'>{remoteType}</p>
-          </p>
-          <p className='flex items-start justify-start gap-1'>
-            <p className='text-lightBlack text-base font-normal text-neutral-800'>
+          <div className='flex items-start justify-start gap-1'>
+            <p className='text-neutral-800 text-base font-normal text-lightBlack'>{remoteType}</p>
+          </div>
+          <div className='flex items-start justify-start gap-1'>
+            <p className='text-neutral-800 text-base font-normal text-lightBlack'>
               Experience ({experienceMinimum} - {experienceMaximum} years)
             </p>
-          </p>
-          <p className='flex items-start justify-start gap-1'>
-            <p className='text-lightBlack text-base font-normal text-neutral-800'>
+          </div>
+          <div className='flex items-start justify-start gap-1'>
+            <p className='text-neutral-800 text-base font-normal text-lightBlack'>
               INR (₹) {salaryMinimum} - {salaryMaximum} / Month
             </p>
-          </p>
-          <p className='flex items-start justify-start gap-1'>
-            <p className='text-lightBlack text-base font-normal text-neutral-800'>{totalEmployees} employees</p>
-          </p>
+          </div>
+          <div className='flex items-start justify-start gap-1'>
+            <p className='text-neutral-800 text-base font-normal text-lightBlack'>{totalEmployees} employees</p>
+          </div>
         </div>
         <div className='flex'>
           <Button variant={applyType === 'now' ? 'filled' : 'outlined'}>{applyType === 'now' ? 'Apply Now' : 'External Apply'}</Button>
         </div>
       </div>
-      <div className='flex flex-col items-end justify-end gap-y-2'>
+      <div className='flex flex-auto flex-col items-end justify-end gap-y-2'>
         <Button
           variant='outlined'
           onClick={() => {
@@ -56,7 +66,7 @@ const JobCard: FC<Props> = ({ listing }) => {
         >
           ✎
         </Button>
-        <Button variant='outlined' onClick={() => deleteListing(id)} className='text-2xl'>
+        <Button variant='outlined' onClick={handleDelete} className='text-2xl'>
           ×
         </Button>
       </div>

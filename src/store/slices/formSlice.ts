@@ -11,7 +11,7 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-  isOpen: true,
+  isOpen: false,
   step: 1,
   data: {
     id: { value: '', error: '' },
@@ -55,14 +55,14 @@ export const formSlice = createSlice({
         {} as Record<keyof Listing, FormField>
       )
     },
-    setFormField(state, action: PayloadAction<{ input: keyof Listing; value: string }>) {
+    setFieldValue(state, action: PayloadAction<{ input: keyof Listing; value: string }>) {
       const { input, value } = action.payload
       state.data[input] = { value: value, error: '' }
     }
   }
 })
 
-export const { openForm, closeForm, setFormData, setStep, setFormField } = formSlice.actions
+export const { openForm, closeForm, setFormData, setStep, setFieldValue } = formSlice.actions
 
 export const selectIsFormOpen = (state: RootState) => state.form.isOpen
 

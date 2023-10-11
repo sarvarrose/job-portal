@@ -18,4 +18,4 @@ export type Listing = {
 
 export type ListingCreatePayload = Omit<Listing, 'id' | 'avatar' | 'created_at'>
 
-export type ListingUpdatePayload = Partial<ListingCreatePayload> & { id: string }
+export type ListingUpdatePayload = Omit<Listing, 'avatar' | 'created_at'>
