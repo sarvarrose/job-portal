@@ -1,11 +1,16 @@
 import { FC } from 'react'
 import { Listing } from '../../../../types'
+import Button from '../../Button.tsx'
+import { useAppDispatch } from '../../../store'
+import { openForm, setFormData } from '../../../store/slices/formSlice'
+import deleteListing from '../../../apis/listings/deleteListing'
 
 interface Props {
   listing: Listing
 }
 const JobCard: FC<Props> = ({ listing }) => {
-  const { jobTitle, companyName, location, remoteType, totalEmployees, industry, salary, experience, avatar, applyType } = listing
+  const dispatch = useAppDispatch()
+  const { id, jobTitle, companyName, location, remoteType, totalEmployees, industry, salaryMinimum, salaryMaximum, experienceMinimum, experienceMaximum, avatar, applyType } = listing
 
   return (
     <div className='flex min-w-[500px] basis-[40%] flex-row items-start justify-start gap-1 self-stretch rounded-lg bg-white px-6 py-4'>
@@ -24,12 +29,12 @@ const JobCard: FC<Props> = ({ listing }) => {
           </p>
           <p className='flex items-start justify-start gap-1'>
             <p className='text-lightBlack text-base font-normal text-neutral-800'>
-              Experience ({experience.minumum} - {experience.maximum} years)
+              Experience ({experienceMinimum} - {experienceMaximum} years)
             </p>
           </p>
           <p className='flex items-start justify-start gap-1'>
             <p className='text-lightBlack text-base font-normal text-neutral-800'>
-              INR (₹) {salary.minumum} - {salary.maximum} / Month
+              INR (₹) {salaryMinimum} - {salaryMaximum} / Month
             </p>
           </p>
           <p className='flex items-start justify-start gap-1'>
@@ -37,10 +42,23 @@ const JobCard: FC<Props> = ({ listing }) => {
           </p>
         </div>
         <div className='flex'>
-          <button className={`rounded-xl px-4 py-2 ${applyType === 'now' ? 'bg-primary text-white' : 'border-primary text-primary border'}`}>
-            {applyType === 'now' ? 'Apply Now' : 'External Apply'}
-          </button>
+          <Button variant={applyType === 'now' ? 'filled' : 'outlined'}>{applyType === 'now' ? 'Apply Now' : 'External Apply'}</Button>
         </div>
+      </div>
+      <div className='flex flex-col items-end justify-end gap-y-2'>
+        <Button
+          variant='outlined'
+          onClick={() => {
+            dispatch(setFormData(listing))
+            dispatch(openForm())
+          }}
+          className='text-2xl'
+        >
+          ✎
+        </Button>
+        <Button variant='outlined' onClick={() => deleteListing(id)} className='text-2xl'>
+          ×
+        </Button>
       </div>
     </div>
   )

@@ -1,12 +1,3 @@
-type Experience = {
-  minumum: number
-  maximum: number
-}
-type Salary = {
-  minumum: number
-  maximum: number
-}
-
 export type Listing = {
   id: string
   avatar: string
@@ -17,8 +8,14 @@ export type Listing = {
   remoteType: string
   totalEmployees: string
   remoteType: string
-  experience: Experience
-  salary: Salary
+  experienceMinimum: number
+  experienceMaximum: number
+  salaryMinimum: number
+  salaryMaximum: number
   applyType: 'now' | 'external'
   created_at: string
 }
+
+export type ListingCreatePayload = Omit<Listing, 'id' | 'avatar' | 'created_at'>
+
+export type ListingUpdatePayload = Partial<ListingCreatePayload> & { id: string }
