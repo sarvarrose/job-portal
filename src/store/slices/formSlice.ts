@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Listing, ListingCreatePayload, ListingUpdatePayload } from '../../../types'
-import { RootState } from '..'
+import { RootState } from '../index'
 
 type FormField = { value: string; error: string }
 
@@ -35,16 +35,11 @@ export const formSlice = createSlice({
   name: 'form',
   initialState,
   reducers: {
-    openForm: (state) => {
+    openForm: (state, action: PayloadAction<Listing | undefined>) => {
       state.isOpen = true
-    },
-    closeForm: () => {
-      return initialState
-    },
-    setStep: (state, action: PayloadAction<number>) => {
-      state.step = action.payload
-    },
-    setFormData: (state, action: PayloadAction<Listing>) => {
+
+      if (!action.payload) return
+
       state.data = Object.keys(action.payload).reduce(
         (acc, key) => {
           return {
@@ -55,6 +50,12 @@ export const formSlice = createSlice({
         {} as Record<keyof Listing, FormField>
       )
     },
+    closeForm: () => {
+      return initialState
+    },
+    setStep: (state, action: PayloadAction<number>) => {
+      state.step = action.payload
+    },
     setFieldValue(state, action: PayloadAction<{ input: keyof Listing; value: string }>) {
       const { input, value } = action.payload
       state.data[input] = { value: value, error: '' }
@@ -62,10 +63,14 @@ export const formSlice = createSlice({
   }
 })
 
-export const { openForm, closeForm, setFormData, setStep, setFieldValue } = formSlice.actions
+export const { openForm, closeForm, setStep, setFieldValue } = formSlice.actions
 
-export const selectIsFormOpen = (state: RootState) => state.form.isOpen
+export default formSlice.reducer
 
+// selectors
+export const selectForm = (state: RootState) => state.form
+
+// TODO: move this to helper functions
 export const selectListingCreatePayload = (state: RootState) => {
   return Object.keys(state.form.data).reduce((acc, key) => {
     if (key === 'id' || key === 'avatar' || key === 'created_at') return acc
@@ -77,6 +82,7 @@ export const selectListingCreatePayload = (state: RootState) => {
   }, {} as ListingCreatePayload)
 }
 
+// TODO: move this to helper functions
 export const selectListingUpdatePayload = (state: RootState) => {
   return Object.keys(state.form.data).reduce((acc, key) => {
     if (key === 'avatar' || key === 'created_at') return acc
@@ -87,5 +93,3 @@ export const selectListingUpdatePayload = (state: RootState) => {
     }
   }, {} as ListingUpdatePayload)
 }
-
-export default formSlice.reducer

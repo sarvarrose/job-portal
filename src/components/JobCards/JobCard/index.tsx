@@ -1,11 +1,9 @@
 import { FC } from 'react'
 import { Listing } from '../../../../types'
-import Button from '../../Button.tsx'
+import Button from '../../Button'
 import { useAppDispatch } from '../../../store'
-import { openForm, setFormData } from '../../../store/slices/formSlice'
-import deleteListing from '../../../apis/listings/deleteListing'
-import getListings from '../../../apis/listings/getListings'
-import { setListings } from '../../../store/slices/listingsSlice'
+import { openForm } from '../../../store/slices/formSlice'
+import { deleteListing } from '../../../store/slices/listingsSlice'
 
 interface Props {
   listing: Listing
@@ -17,9 +15,7 @@ const JobCard: FC<Props> = ({ listing }) => {
   const handleDelete = async () => {
     await deleteListing(id)
 
-    // TODO: this is overfetching. we can update the redux state instead to remove the deleted listing on success
-    const listings = await getListings()
-    dispatch(setListings(listings))
+    dispatch(deleteListing(id))
   }
 
   return (
@@ -56,14 +52,7 @@ const JobCard: FC<Props> = ({ listing }) => {
         </div>
       </div>
       <div className='flex flex-auto flex-col items-end justify-end gap-y-2'>
-        <Button
-          variant='outlined'
-          onClick={() => {
-            dispatch(setFormData(listing))
-            dispatch(openForm())
-          }}
-          className='text-2xl'
-        >
+        <Button variant='outlined' onClick={() => dispatch(openForm(listing))} className='text-2xl'>
           ✎
         </Button>
         <Button variant='outlined' onClick={handleDelete} className='text-2xl'>

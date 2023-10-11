@@ -1,19 +1,27 @@
-import { useEffect } from 'react'
-import getListings from '../../apis/listings/getListings'
+import { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../store'
-import { setListings } from '../../store/slices/listingsSlice'
+import { selectListings, setListings } from '../../store/slices/listingsSlice'
 import JobCard from './JobCard'
+import { readListingsRequest } from '../../apis/listings'
+import Spinner from '../Spinner'
 
 const JobCards = () => {
-  const listings = useAppSelector((state) => state.listings)
   const dispatch = useAppDispatch()
+
+  // redux does not support suspense yet
+  const [isLoading, setIsLoading] = useState(true)
+  const listings = useAppSelector(selectListings)
 
   useEffect(() => {
     ;(async () => {
-      const listings = await getListings()
+      const listings = await readListingsRequest()
+
       dispatch(setListings(listings))
+      setIsLoading(false)
     })()
   }, [])
+
+  if (isLoading) return <Spinner />
 
   return (
     <div className='flex flex-wrap items-start justify-center gap-x-20 gap-y-12'>
