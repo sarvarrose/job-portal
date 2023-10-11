@@ -1645,6 +1645,11 @@
     redux-thunk "^2.4.2"
     reselect "^4.1.8"
 
+"@rise8/tailwind-pixel-perfect-preset@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@rise8/tailwind-pixel-perfect-preset/-/tailwind-pixel-perfect-preset-1.0.1.tgz#e9399beb5f509669b1692573f3dddc2adb8e435a"
+  integrity sha512-XFIMm3t21O2Ubb6c49aTqMm/neYzutijYvWKVwYXkeRS4mPn42WpeBJXcy6FWJcAGS8SfwulZGHVlvl+9wDNpQ==
+
 "@rollup/plugin-babel@^5.2.0":
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-babel/-/plugin-babel-5.3.1.tgz#04bc0608f4aa4b2e4b1aebf284344d0f68fda283"

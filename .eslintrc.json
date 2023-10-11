@@ -7,7 +7,7 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
-    "plugin:prettier/recommended"
+    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -17,16 +17,26 @@
   "plugins": ["@typescript-eslint", "react", "prettier"],
   "rules": {
     "prettier/prettier": [
-      "error",
+      "warn",
       {
         "singleQuote": true,
-        "printWidth": 180,
         "trailingComma": "none",
         "semi": false,
-        "jsxSingleQuote": true
+        "jsxSingleQuote": true,
+        "printWidth": 200
       }
     ],
     "react/react-in-jsx-scope": "off",
-    "no-trailing-spaces": "error"
+    "no-trailing-spaces": "warn",
+    "max-len": [
+      "warn",
+      {
+        "code": 200,
+        "ignoreComments": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true,
+        "ignoreRegExpLiterals": true
+      }
+    ]
   }
 }
